@@ -1,0 +1,26 @@
+{
+  "pages": [
+    {
+      "path": "pages/index/index",
+      "style": {
+        "navigationBarTitleText": "物联网监控系统",
+        "navigationBarBackgroundColor": "#1a73e8",
+        "navigationBarTextStyle": "white"
+      }
+    },
+    {
+      "path": "pages/chart/chart",
+      "style": {
+        "navigationBarTitleText": "数据图表",
+        "navigationBarBackgroundColor": "#1a73e8",
+        "navigationBarTextStyle": "white"
+      }
+    }
+  ],
+  "globalStyle": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "物联网监控",
+    "navigationBarBackgroundColor": "#ffffff",
+    "backgroundColor": "#f5f5f5"
+  }
+}

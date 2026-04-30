@@ -1,0 +1,108 @@
+<view class="container">
+  <view class="card">
+    <view class="card-title">数据趋势图表</view>
+    
+    <view class="chart-tabs">
+      <view 
+        class="tab-item {{currentTab === 'temperature' ? 'active' : ''}}"
+        bindtap="switchTab"
+        data-tab="temperature"
+      >
+        <view class="tab-dot temperature"></view>
+        <text>温度</text>
+      </view>
+      <view 
+        class="tab-item {{currentTab === 'humidity' ? 'active' : ''}}"
+        bindtap="switchTab"
+        data-tab="humidity"
+      >
+        <view class="tab-dot humidity"></view>
+        <text>湿度</text>
+      </view>
+      <view 
+        class="tab-item {{currentTab === 'light' ? 'active' : ''}}"
+        bindtap="switchTab"
+        data-tab="light"
+      >
+        <view class="tab-dot light"></view>
+        <text>光照</text>
+      </view>
+      <view 
+        class="tab-item {{currentTab === 'speed' ? 'active' : ''}}"
+        bindtap="switchTab"
+        data-tab="speed"
+      >
+        <view class="tab-dot speed"></view>
+        <text>转速</text>
+      </view>
+      <view 
+        class="tab-item {{currentTab === 'waterLevel' ? 'active' : ''}}"
+        bindtap="switchTab"
+        data-tab="waterLevel"
+      >
+        <view class="tab-dot water"></view>
+        <text>水位</text>
+      </view>
+    </view>
+
+    <view class="chart-container">
+      <canvas 
+        canvas-id="lineChart" 
+        class="chart-canvas"
+        bindtouchstart="onTouchStart"
+        bindtouchmove="onTouchMove"
+        bindtouchend="onTouchEnd"
+      ></canvas>
+    </view>
+
+    <view class="chart-info">
+      <view class="info-row">
+        <text class="info-label">当前值</text>
+        <text class="info-value">{{currentValue}}</text>
+      </view>
+      <view class="info-row">
+        <text class="info-label">最大值</text>
+        <text class="info-value">{{maxValue}}</text>
+      </view>
+      <view class="info-row">
+        <text class="info-label">最小值</text>
+        <text class="info-value">{{minValue}}</text>
+      </view>
+      <view class="info-row">
+        <text class="info-label">平均值</text>
+        <text class="info-value">{{avgValue}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="card-title">实时数据概览</view>
+    <view class="overview-grid">
+      <view class="overview-item">
+        <text class="overview-value temp">{{sensorData.temperature.toFixed(1)}}</text>
+        <text class="overview-unit">°C</text>
+        <text class="overview-name">温度</text>
+      </view>
+      <view class="overview-item">
+        <text class="overview-value hum">{{sensorData.humidity.toFixed(1)}}</text>
+        <text class="overview-unit">%</text>
+        <text class="overview-name">湿度</text>
+      </view>
+      <view class="overview-item">
+        <text class="overview-value light">{{sensorData.light.toFixed(0)}}</text>
+        <text class="overview-unit">lux</text>
+        <text class="overview-name">光照</text>
+      </view>
+      <view class="overview-item">
+        <text class="overview-value speed">{{sensorData.speed.toFixed(0)}}</text>
+        <text class="overview-unit">rpm</text>
+        <text class="overview-name">转速</text>
+      </view>
+      <view class="overview-item">
+        <text class="overview-value water">{{sensorData.waterLevel.toFixed(1)}}</text>
+        <text class="overview-unit">cm</text>
+        <text class="overview-name">水位</text>
+      </view>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,172 @@
+<view class="container">
+  <view class="connection-section">
+    <view class="connection-status">
+      <view class="status-dot {{isConnected ? 'connected' : 'disconnected'}}"></view>
+      <text class="status-text">{{isConnected ? '蓝牙已连接' : '蓝牙未连接'}}</text>
+    </view>
+    <button 
+      class="connect-btn {{bleConnected ? 'disconnect' : ''}}" 
+      bindtap="startSearch"
+      disabled="{{searching}}"
+    >
+      {{searching ? '搜索中...' : (bleConnected ? '断开连接' : '搜索设备')}}
+    </button>
+  </view>
+
+  <view class="card">
+    <view class="card-title">实时数据监测</view>
+    <view class="sensor-grid">
+      <view class="sensor-item">
+        <view class="sensor-icon temperature"></view>
+        <view class="sensor-info">
+          <text class="sensor-value">{{sensorData.temperature.toFixed(1)}}°C</text>
+          <text class="sensor-name">温度</text>
+        </view>
+      </view>
+      <view class="sensor-item">
+        <view class="sensor-icon humidity"></view>
+        <view class="sensor-info">
+          <text class="sensor-value">{{sensorData.humidity.toFixed(1)}}%</text>
+          <text class="sensor-name">湿度</text>
+        </view>
+      </view>
+      <view class="sensor-item">
+        <view class="sensor-icon light"></view>
+        <view class="sensor-info">
+          <text class="sensor-value">{{sensorData.light.toFixed(0)}} lux</text>
+          <text class="sensor-name">光照度</text>
+        </view>
+      </view>
+      <view class="sensor-item">
+        <view class="sensor-icon speed"></view>
+        <view class="sensor-info">
+          <text class="sensor-value">{{sensorData.speed.toFixed(0)}} rpm</text>
+          <text class="sensor-name">转速</text>
+        </view>
+      </view>
+      <view class="sensor-item">
+        <view class="sensor-icon water"></view>
+        <view class="sensor-info">
+          <text class="sensor-value">{{sensorData.waterLevel.toFixed(1)}} cm</text>
+          <text class="sensor-name">水位</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="card-title">设备控制</view>
+    <view class="device-grid">
+      <view class="device-item">
+        <view class="device-icon gate"></view>
+        <text class="device-name">闸门</text>
+        <switch 
+          class="device-switch" 
+          checked="{{deviceStatus.gate}}" 
+          color="#1a73e8"
+          bindchange="toggleGate"
+        />
+      </view>
+      <view class="device-item">
+        <view class="device-icon light"></view>
+        <text class="device-name">灯管</text>
+        <switch 
+          class="device-switch" 
+          checked="{{deviceStatus.light}}" 
+          color="#1a73e8"
+          bindchange="toggleLight"
+        />
+      </view>
+      <view class="device-item">
+        <view class="device-icon access"></view>
+        <text class="device-name">门禁</text>
+        <switch 
+          class="device-switch" 
+          checked="{{deviceStatus.access}}" 
+          color="#1a73e8"
+          bindchange="toggleAccess"
+        />
+      </view>
+      <view class="device-item">
+        <view class="device-icon fan"></view>
+        <text class="device-name">风扇</text>
+        <switch 
+          class="device-switch" 
+          checked="{{deviceStatus.fan}}" 
+          color="#1a73e8"
+          bindchange="toggleFan"
+        />
+      </view>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="card-title">设备状态</view>
+    <view class="status-list">
+      <view class="status-row">
+        <text class="status-label">闸门</text>
+        <text class="status-value {{deviceStatus.gate ? 'status-active' : 'status-inactive'}}">
+          {{deviceStatus.gate ? '已开启' : '已关闭'}}
+        </text>
+      </view>
+      <view class="status-row">
+        <text class="status-label">灯管</text>
+        <text class="status-value {{deviceStatus.light ? 'status-active' : 'status-inactive'}}">
+          {{deviceStatus.light ? '已开启' : '已关闭'}}
+        </text>
+      </view>
+      <view class="status-row">
+        <text class="status-label">门禁</text>
+        <text class="status-value {{deviceStatus.access ? 'status-active' : 'status-inactive'}}">
+          {{deviceStatus.access ? '已开启' : '已关闭'}}
+        </text>
+      </view>
+      <view class="status-row">
+        <text class="status-label">风扇</text>
+        <text class="status-value {{deviceStatus.fan ? 'status-active' : 'status-inactive'}}">
+          {{deviceStatus.fan ? '已开启' : '已关闭'}}
+        </text>
+      </view>
+    </view>
+  </view>
+
+  <view class="nav-buttons">
+    <button class="nav-btn" bindtap="goToChart">查看数据图表</button>
+  </view>
+</view>
+
+<view class="device-modal {{showDeviceList ? 'show' : ''}}" bindtap="closeDeviceList">
+  <view class="modal-content" catchtap="preventDefault">
+    <view class="modal-header">
+      <text class="modal-title">选择蓝牙设备</text>
+      <view class="modal-close" bindtap="closeDeviceList">×</view>
+    </view>
+    <view class="modal-body">
+      <view class="scan-info">
+        <view class="scan-dot"></view>
+        <text>{{searching ? '正在搜索...' : '点击搜索按钮刷新设备列表'}}</text>
+      </view>
+      <scroll-view scroll-y class="device-list">
+        <view 
+          wx:for="{{deviceList}}" 
+          wx:key="deviceId" 
+          class="device-item-list"
+          bindtap="selectDevice"
+          data-device="{{item}}"
+        >
+          <view class="device-icon-bluetooth"></view>
+          <view class="device-info">
+            <text class="device-name-list">{{item.name || '未知设备'}}</text>
+            <text class="device-id">{{item.deviceId}}</text>
+          </view>
+          <view class="device-rssi">
+            <text>{{item.RSSI}} dBm</text>
+          </view>
+        </view>
+        <view wx:if="{{deviceList.length === 0 && !searching}}" class="empty-tip">
+          <text>未找到蓝牙设备</text>
+        </view>
+      </scroll-view>
+    </view>
+  </view>
+</view>

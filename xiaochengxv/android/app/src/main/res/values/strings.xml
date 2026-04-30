@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">物联网监控系统</string>
+    <string name="scan">扫描</string>
+    <string name="connect">连接</string>
+    <string name="status_disconnected">状态: 未连接</string>
+    <string name="sensor_data">实时数据监测</string>
+    <string name="temperature">温度</string>
+    <string name="humidity">湿度</string>
+    <string name="light">光照度</string>
+    <string name="speed">转速</string>
+    <string name="water_level">水位</string>
+    <string name="device_control">设备控制</string>
+    <string name="gate">闸门</string>
+    <string name="access">门禁</string>
+    <string name="fan">风扇</string>
+    <string name="on">开</string>
+    <string name="off">关</string>
+    <string name="log">系统日志</string>
+</resources>
